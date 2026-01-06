@@ -1,17 +1,17 @@
-# Depth-First Search (DFS)
+# Depth-First Search (DFS) - General Undirected Graph (11 nodes, cyclic)
 
 graph = {
     'A': ['B', 'C', 'D'],
-    'B': ['A', 'E', 'F', 'G'],
-    'C': ['A', 'H'],
-    'D': ['A'],
-    'E': ['B'],
-    'F': ['B', 'I'],
-    'G': ['B'],
-    'H': ['C', 'J'],
-    'I': ['F'],
-    'J': ['H', 'K'],
-    'K': ['J']
+    'B': ['A', 'E', 'F', 'C'],   # degree 4
+    'C': ['A', 'B', 'G'],
+    'D': ['A', 'H'],
+    'E': ['B', 'I'],
+    'F': ['B', 'C'],             # cycle: B-C-F-B
+    'G': ['C', 'J'],
+    'H': ['D'],
+    'I': ['E', 'K'],
+    'J': ['G'],
+    'K': ['I']
 }
 
 visited = set()

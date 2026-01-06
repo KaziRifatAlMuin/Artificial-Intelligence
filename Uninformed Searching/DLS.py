@@ -1,23 +1,23 @@
-# Depth-Limited Search (DLS)
+# Depth-Limited Search (DLS) - General Undirected Graph (with cycles)
 
 graph = {
     'A': ['B', 'C', 'D'],
-    'B': ['A', 'E', 'F', 'G'],
-    'C': ['A', 'H'],
-    'D': ['A'],
-    'E': ['B'],
-    'F': ['B', 'I'],
-    'G': ['B'],
-    'H': ['C', 'J'],
-    'I': ['F'],
-    'J': ['H', 'K'],
-    'K': ['J']
+    'B': ['A', 'E', 'F', 'C'],
+    'C': ['A', 'B', 'G'],
+    'D': ['A', 'H'],
+    'E': ['B', 'I'],
+    'F': ['B', 'C'],
+    'G': ['C', 'J'],
+    'H': ['D'],
+    'I': ['E', 'K'],
+    'J': ['G'],
+    'K': ['I']
 }
 
 search_order = []
 visited_count = 0
 
-def dls(node, goal, limit, parent=None):
+def dls(node, goal, limit, visited):
     global visited_count
 
     search_order.append(node)
@@ -29,9 +29,11 @@ def dls(node, goal, limit, parent=None):
     if limit == 0:
         return "CUTOFF"
 
+    visited.add(node)
+
     for child in graph[node]:
-        if child != parent:  # avoid going back to parent
-            result = dls(child, goal, limit - 1, node)
+        if child not in visited:
+            result = dls(child, goal, limit - 1, visited)
             if result == "SUCCESS":
                 return "SUCCESS"
 
@@ -41,9 +43,9 @@ def dls(node, goal, limit, parent=None):
 # Driver Code
 start = 'A'
 goal = 'K'
-depth_limit = 4
+depth_limit = 5
 
-result = dls(start, goal, depth_limit)
+result = dls(start, goal, depth_limit, set())
 
 print("DLS Search Order:", search_order)
 print("Result:", result)

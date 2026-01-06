@@ -1,20 +1,20 @@
-# Iterative Deepening DFS (IDDFS)
+# Iterative Deepening DFS (IDDFS) - General Graph (with cycles)
 
 graph = {
     'A': ['B', 'C', 'D'],
-    'B': ['A', 'E', 'F', 'G'],
-    'C': ['A', 'H'],
-    'D': ['A'],
-    'E': ['B'],
-    'F': ['B', 'I'],
-    'G': ['B'],
-    'H': ['C', 'J'],
-    'I': ['F'],
-    'J': ['H', 'K'],
-    'K': ['J']
+    'B': ['A', 'E', 'F', 'C'],
+    'C': ['A', 'B', 'G'],
+    'D': ['A', 'H'],
+    'E': ['B', 'I'],
+    'F': ['B', 'C'],
+    'G': ['C', 'J'],
+    'H': ['D'],
+    'I': ['E', 'K'],
+    'J': ['G'],
+    'K': ['I']
 }
 
-def dls(node, goal, limit, parent, order, counter):
+def dls(node, goal, limit, visited, order, counter):
     order.append(node)
     counter[0] += 1
 
@@ -24,9 +24,11 @@ def dls(node, goal, limit, parent, order, counter):
     if limit == 0:
         return False
 
+    visited.add(node)
+
     for child in graph[node]:
-        if child != parent:
-            if dls(child, goal, limit - 1, node, order, counter):
+        if child not in visited:
+            if dls(child, goal, limit - 1, visited, order, counter):
                 return True
 
     return False
@@ -40,7 +42,7 @@ for depth in range(0, 8):
     search_order = []
     visited_counter = [0]
 
-    found = dls(start, goal, depth, None, search_order, visited_counter)
+    found = dls(start, goal, depth, set(), search_order, visited_counter)
 
     print(f"\nDepth Limit = {depth}")
     print("Search Order:", search_order)
